@@ -39,6 +39,17 @@ jobs:
             --tool 'apt-get --yes --no-install-recommends' \
             debian/control
 
+      - name: Build source package
+        run: |
+          source_name="$(dpkg-parsechangelog --show-field Source)"
+          package_version="$(dpkg-parsechangelog --show-field Version)"
+          upstream_version="${package_version%-*}"
+          git archive --format=tar \
+            --prefix="${source_name}-${upstream_version}/" \
+            HEAD -- . ':(exclude)debian' ':(exclude).github' \
+            | gzip --no-name > "../${source_name}_${upstream_version}.orig.tar.gz"
+          dpkg-buildpackage --no-sign --build=source
+
       - name: Build binary packages
         run: |
           dpkg-buildpackage --no-sign --build=binary 2>&1 | tee ../build.log
@@ -61,3 +72,6 @@ jobs:
             ../emwm_*.ddeb
             ../emwm_*.buildinfo
             ../emwm_*.changes
+            ../emwm_*.debian.tar.*
+            ../emwm_*.dsc
+            ../emwm_*.orig.tar.*
