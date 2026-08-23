@@ -31,7 +31,7 @@ emwm >"$HOME/emwm.log" 2>&1 &
 wm_pid=$!
 cleanup_wm()
 {
-    kill "$wm_pid" 2>/dev/null || true
+    kill -KILL "$wm_pid" 2>/dev/null || true
     wait "$wm_pid" 2>/dev/null || true
 }
 trap cleanup_wm EXIT HUP INT TERM
