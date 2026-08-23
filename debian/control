@@ -1,0 +1,34 @@
+Source: emwm
+Section: x11
+Priority: optional
+Maintainer: Reaper <JohnGrimmReaper@disroot.org>
+Build-Depends:
+ debhelper-compat (= 13),
+ libmotif-dev,
+ libsm-dev,
+ libx11-dev,
+ libxext-dev,
+ libxinerama-dev,
+ libxrandr-dev,
+ libxt-dev,
+Standards-Version: 4.7.4.1
+Rules-Requires-Root: no
+Homepage: http://fastestcode.org/emwm.html
+Vcs-Browser: https://github.com/johngrimmreaper/emwm/tree/ubuntu/24.04-noble
+Vcs-Git: https://github.com/johngrimmreaper/emwm.git -b ubuntu/24.04-noble
+
+Package: emwm
+Architecture: any
+Multi-Arch: foreign
+Provides: x-window-manager
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Recommends:
+ fonts-liberation,
+ xterm,
+Description: enhanced Motif window manager
+ EMWM is a lightweight, standalone window manager derived from the Motif
+ Window Manager. It retains the traditional Motif appearance and resource
+ configuration model while adding multiple workspaces, Xinerama and Xrandr
+ support, UTF-8/Xft text rendering, and relevant EWMH functionality.

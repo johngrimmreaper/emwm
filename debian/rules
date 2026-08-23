@@ -1,0 +1,35 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_CFLAGS_MAINT_APPEND = -Wall
+
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/buildflags.mk
+
+EMWM_CC = $(DEB_HOST_GNU_TYPE)-gcc
+EMWM_CFLAGS = $(CFLAGS) -DUNMAP_ON_RESTART -DNO_OL_COMPAT -DRCDIR=\\\"/etc/X11\\\"
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	ln -s ../mf/Makefile.Linux src/Makefile
+	dh_auto_build --sourcedirectory=src -- \
+		CC="$(EMWM_CC)" \
+		CFLAGS="$(EMWM_CFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
+
+override_dh_auto_clean:
+	$(MAKE) -C src -f ../mf/Makefile.Linux clean
+	$(RM) src/Makefile
+
+override_dh_auto_test:
+	@:
+
+override_dh_auto_install:
+	install -d -m 0755 "$(CURDIR)/debian/emwm/usr/bin"
+	$(MAKE) -C src common_install \
+		PREFIX="$(CURDIR)/debian/emwm/usr" \
+		MANDIR="$(CURDIR)/debian/emwm/usr/share/man" \
+		RCDIR="$(CURDIR)/debian/emwm/etc/X11" \
+		APPLRESDIR="$(CURDIR)/debian/emwm/etc/X11/app-defaults"
