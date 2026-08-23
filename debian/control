@@ -1,7 +1,8 @@
 Source: emwm
 Section: x11
 Priority: optional
-Maintainer: Reaper <JohnGrimmReaper@disroot.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Reaper <JohnGrimmReaper@disroot.org>
 Build-Depends:
  debhelper-compat (= 13),
  libmotif-dev,
