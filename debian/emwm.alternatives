@@ -1,0 +1,6 @@
+Name: x-window-manager
+Link: /usr/bin/x-window-manager
+Alternative: /usr/bin/emwm
+Dependents:
+ /usr/share/man/man1/x-window-manager.1.gz x-window-manager.1.gz /usr/share/man/man1/emwm.1.gz
+Priority: 80
