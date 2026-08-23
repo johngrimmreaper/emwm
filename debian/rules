@@ -24,7 +24,9 @@ override_dh_auto_clean:
 	$(RM) src/Makefile
 
 override_dh_auto_test:
-	@:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	@echo "No upstream test suite; runtime coverage is in autopkgtest."
+endif
 
 override_dh_auto_install:
 	install -d -m 0755 "$(CURDIR)/debian/emwm/usr/bin"

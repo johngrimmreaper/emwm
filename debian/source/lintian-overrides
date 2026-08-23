@@ -1,0 +1,4 @@
+# Ubuntu 24.04's Lintian predates the current Policy release reviewed here.
+emwm source: newer-standards-version 4.7.4.1 (current is 4.6.2)
+# Noble's dpkg still needs the extension prefix to emit Original-Maintainer.
+emwm source: adopted-extended-field (in section for source) XSBC-Original-Maintainer [debian/control:*]
