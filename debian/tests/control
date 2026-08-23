@@ -1,0 +1,6 @@
+Tests: smoke
+Depends:
+ @,
+ xauth,
+ x11-utils,
+ xvfb
