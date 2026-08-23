@@ -5,7 +5,7 @@ test -x /usr/bin/emwm
 test -r /etc/X11/app-defaults/Emwm
 test -r /etc/X11/system.emwmrc
 test -r /usr/share/man/man1/emwm.1.gz
-test -r /usr/share/man/man4/emwmrc.4.gz
+test -r /usr/share/man/man5/emwmrc.5.gz
 test -r /usr/share/xsessions/emwm.desktop
 
 grep -Fxq 'Exec=/usr/bin/emwm' /usr/share/xsessions/emwm.desktop
