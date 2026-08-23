@@ -61,9 +61,10 @@ jobs:
         run: lintian --fail-on error --display-info --pedantic ../emwm_*.changes
 
       - name: Run autopkgtests
-        run: sudo autopkgtest . -- null
+        run: sudo autopkgtest . ../emwm_*_amd64.deb -- null
 
       - name: Upload packages and build metadata
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: emwm-noble-${{ github.sha }}
