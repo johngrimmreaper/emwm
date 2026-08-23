@@ -1,0 +1,63 @@
+name: Ubuntu Noble package
+
+on:
+  push:
+    branches:
+      - ubuntu/24.04-noble
+  pull_request:
+    branches:
+      - ubuntu/24.04-noble
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: noble-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: Build and test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install packaging tools and build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends \
+            autopkgtest \
+            blhc \
+            devscripts \
+            equivs \
+            lintian
+          sudo mk-build-deps --install --remove \
+            --tool 'apt-get --yes --no-install-recommends' \
+            debian/control
+
+      - name: Build binary packages
+        run: |
+          dpkg-buildpackage --no-sign --build=binary 2>&1 | tee ../build.log
+
+      - name: Check hardening flags
+        run: blhc --all --debian ../build.log
+
+      - name: Run Lintian
+        run: lintian --fail-on error --display-info --pedantic ../emwm_*.changes
+
+      - name: Run autopkgtests
+        run: sudo autopkgtest . -- null
+
+      - name: Upload packages and build metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: emwm-noble-${{ github.sha }}
+          path: |
+            ../emwm_*.deb
+            ../emwm_*.ddeb
+            ../emwm_*.buildinfo
+            ../emwm_*.changes
