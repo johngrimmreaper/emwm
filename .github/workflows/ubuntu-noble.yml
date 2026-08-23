@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Check out source
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Install packaging tools and build dependencies
         run: |
@@ -63,16 +63,16 @@ jobs:
       - name: Run autopkgtests
         run: sudo autopkgtest . ../emwm_*_amd64.deb -- null
 
+      - name: Collect packages and build metadata
+        if: always()
+        run: |
+          mkdir -p artifacts
+          find .. -maxdepth 1 -type f -name 'emwm*' \
+            -exec cp -- {} artifacts/ \;
+
       - name: Upload packages and build metadata
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: emwm-noble-${{ github.sha }}
-          path: |
-            ../emwm_*.deb
-            ../emwm_*.ddeb
-            ../emwm_*.buildinfo
-            ../emwm_*.changes
-            ../emwm_*.debian.tar.*
-            ../emwm_*.dsc
-            ../emwm_*.orig.tar.*
+          path: artifacts/
