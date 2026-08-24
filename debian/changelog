@@ -1,5 +1,5 @@
-emwm (2.1~git20260809.23b920f-0ubuntu1) noble; urgency=medium
+emwm (2.1~git20260809.23b920f-0ubuntu1) UNRELEASED; urgency=medium
 
-  * Initial Ubuntu release from the current upstream development snapshot.
+  * Package the current EMWM upstream development snapshot.
 
  -- Reaper <JohnGrimmReaper@disroot.org>  Sun, 23 Aug 2026 18:30:58 +0000
