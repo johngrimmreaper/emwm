@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=EMWM
+Comment=Enhanced Motif Window Manager
+Exec=/usr/bin/emwm
+TryExec=/usr/bin/emwm
+Type=Application
+DesktopNames=EMWM

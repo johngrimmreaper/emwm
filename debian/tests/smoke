@@ -1,0 +1,58 @@
+#!/bin/sh
+set -eu
+
+test -x /usr/bin/emwm
+test -r /etc/X11/app-defaults/Emwm
+test -r /etc/X11/system.emwmrc
+test -r /usr/share/man/man1/emwm.1.gz
+test -r /usr/share/man/man5/emwmrc.5.gz
+test -r /usr/share/xsessions/emwm.desktop
+
+grep -Fxq 'Exec=/usr/bin/emwm' /usr/share/xsessions/emwm.desktop
+grep -Fxq 'DesktopNames=EMWM' /usr/share/xsessions/emwm.desktop
+update-alternatives --list x-window-manager | grep -Fxq /usr/bin/emwm
+
+test_home="$(mktemp -d)"
+trap 'rm -rf "$test_home"' EXIT HUP INT TERM
+export HOME="$test_home"
+export XDG_RUNTIME_DIR="$test_home"
+
+xvfb-run -a -s '-screen 0 800x600x24 -nolisten tcp' sh -eu <<'EOF'
+version="$(emwm -version 2>&1)"
+case "$version" in
+    'EMWM - Version '*' (Motif '*) ;;
+    *)
+        printf 'unexpected version output: %s\n' "$version" >&2
+        exit 1
+        ;;
+esac
+
+emwm >"$HOME/emwm.log" 2>&1 &
+wm_pid=$!
+cleanup_wm()
+{
+    kill -KILL "$wm_pid" 2>/dev/null || true
+    wait "$wm_pid" 2>/dev/null || true
+}
+trap cleanup_wm EXIT HUP INT TERM
+
+ready=false
+attempt=0
+while [ "$attempt" -lt 50 ]; do
+    if xprop -root _NET_SUPPORTING_WM_CHECK 2>/dev/null |
+            grep -q 'window id'; then
+        ready=true
+        break
+    fi
+    attempt=$((attempt + 1))
+    sleep 0.1
+done
+
+if [ "$ready" != true ]; then
+    cat "$HOME/emwm.log" >&2
+    exit 1
+fi
+
+kill -0 "$wm_pid"
+xprop -root _NET_SUPPORTED | grep -q _NET_ACTIVE_WINDOW
+EOF

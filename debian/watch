@@ -1,0 +1,4 @@
+version=4
+opts="filenamemangle=s%(?:.*/)?emwm-src-([0-9][0-9.]*)\.tar\.xz%emwm-$1.tar.xz%" \
+ https://fastestcode.org/emwm.html \
+ (?:.*/)?emwm-src-([0-9][0-9.]*)\.tar\.xz

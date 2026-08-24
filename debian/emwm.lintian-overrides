@@ -1,0 +1,4 @@
+# Display-manager session selectors are not application-menu entries; neither
+# field adds useful metadata for this file.
+emwm: desktop-entry-lacks-icon-entry [usr/share/xsessions/emwm.desktop]
+emwm: desktop-entry-lacks-keywords-entry [usr/share/xsessions/emwm.desktop]

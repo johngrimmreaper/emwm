@@ -1,0 +1,5 @@
+emwm (2.1~git20260813.23b920f-1) UNRELEASED; urgency=medium
+
+  * Package the current EMWM upstream development snapshot.
+
+ -- Reaper <JohnGrimmReaper@disroot.org>  Sun, 23 Aug 2026 18:30:58 +0000
